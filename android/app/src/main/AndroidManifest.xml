@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.template">
+    <uses-permission android:name="android.permission.CAMERA"/>
    <application
         android:label="template"
         android:name="${applicationName}"

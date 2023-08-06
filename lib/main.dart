@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -7,8 +8,13 @@ import 'package:template/core/Utilities/routes/routes.dart';
 import 'package:template/presentation/styles/darkMode_provider.dart';
 import 'package:template/presentation/styles/theme.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(const ProviderScope(
@@ -66,10 +72,11 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final provider = ref.watch(themeProvider);
+    final goRouter = ref.watch(goRouterProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: Styles.themeData(provider.darkTheme, context),
-      routerConfig: AppRoutes().router,
+      routerConfig: goRouter,
       builder: EasyLoading.init(),
     );
   }
