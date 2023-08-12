@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tflite/tflite.dart';
 
+import '../../../../core/Utilities/screen_params.dart';
+
 final homePageVM = ChangeNotifierProvider((ref) => HomePageViewModel());
 
 class HomePageViewModel with ChangeNotifier {
@@ -16,6 +18,7 @@ class HomePageViewModel with ChangeNotifier {
 
   var cameraCount = 0;
   var x = 0.0, y = 0.0, w = 0.0, h = 0.0;
+  var top = 0.0;
   var label = "";
 
   Future<void> initCamera() async {
@@ -31,6 +34,7 @@ class HomePageViewModel with ChangeNotifier {
           }
           notifyListeners();
         });
+        ScreenParams.previewSize = cameraController.value.previewSize!;
       });
       isCameraInitialized.value = true;
       notifyListeners();
@@ -49,7 +53,9 @@ class HomePageViewModel with ChangeNotifier {
       imageStd: 127.5, // defaults to 127.5
       rotation: 90, // defaults to 90, Android only
       numResultsPerClass: 5,
+      // numBoxesPerBlock: 10,
       asynch: true,
+      threshold: 0.4,
     );
 
     if (detector != null) {
@@ -60,7 +66,12 @@ class HomePageViewModel with ChangeNotifier {
       if (detectedObject == null) {
         return;
       }
+
       label = detectedObject["detectedClass"].toString();
+      if (detectedObject["confidenceInClass"] <= 0.6) {
+        return;
+      }
+      top = image.height / image.width;
       h = detectedObject["rect"]["h"];
       w = detectedObject["rect"]["w"];
       x = detectedObject["rect"]["x"];
@@ -68,6 +79,19 @@ class HomePageViewModel with ChangeNotifier {
       log("Result is $detector");
       notifyListeners();
     }
+  }
+
+  Rect renderLocation() {
+    log("Screen preview width size is${ScreenParams.screenPreviewSize.width}");
+    log("Screen preview height size is${ScreenParams.screenPreviewSize.height}");
+    final double scaleX = ScreenParams.screenPreviewSize.width / 300;
+    final double scaleY = ScreenParams.screenPreviewSize.height / 300;
+    return Rect.fromLTWH(
+      x * scaleX,
+      y * scaleY,
+      w * scaleX,
+      h * scaleY,
+    );
   }
 
   Future<void> initTFLite() async {

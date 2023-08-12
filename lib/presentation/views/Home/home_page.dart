@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:template/presentation/views/Home/viewModel/home_page_view_model.dart';
 import 'package:tflite/tflite.dart';
 
+import '../../../core/Utilities/screen_params.dart';
+
 class HomePage extends ConsumerStatefulWidget {
   static const routeIdentifier = "HOME_PAGE";
   const HomePage({super.key});
@@ -34,6 +36,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final provider = ref.watch(homePageVM);
+    ScreenParams.screenSize = MediaQuery.sizeOf(context);
     final size = MediaQuery.sizeOf(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -45,11 +48,11 @@ class _HomePageState extends ConsumerState<HomePage> {
               children: [
                 CameraPreview(provider.cameraController),
                 Positioned(
-                  top: provider.y * 700,
-                  right: provider.x * 500,
+                  top: provider.y * size.height,
+                  left: provider.x * size.width,
                   child: Container(
-                    width: provider.w * 100 * size.width / 100,
-                    height: provider.h * 100 * size.height / 100,
+                    width: provider.w * size.width,
+                    height: provider.h * size.height,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
