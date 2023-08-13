@@ -59,7 +59,10 @@ class _IdentifiedDetailsPanelState
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                provider.identifiedLabels.value.first.text.capitalizeByWord(),
+                provider.identifiedLabels.value.isEmpty
+                    ? "EyeDentified Objects will be shown here"
+                    : provider.identifiedLabels.value.first.text
+                        .capitalizeByWord(),
                 style: AppTextStyle.bodyTwo.copyWith(
                   fontSize: 24,
                   color: AppColors.black,
@@ -91,83 +94,85 @@ class _IdentifiedDetailsPanelState
             ],
           ),
           10.0.verticalSpace(),
-          Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            runSpacing: 10,
-            children: provider.identifiedLabels.value
-                .take(3)
-                .mapIndexed<Widget>((index, element) {
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "${(element.confidence * 100).toStringAsFixed(0)}% ${element.text.capitalizeByWord()}",
-                    style: const TextStyle(
-                      color: AppColors.textGray,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Icon(
-                      Icons.circle,
-                      color: AppColors.textGray,
-                      size: 10,
-                    ),
-                  ),
-                ],
-              );
-            }).toList(),
-            // children: [
-            //   Text(
-            //     "90% Milk bottle",
-            //     style: TextStyle(
-            //       color: AppColors.textGray,
-            //       fontSize: 16,
-            //     ),
-            //   ),
-            //   Padding(
-            //     padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            //     child: Icon(
-            //       Icons.circle,
-            //       color: AppColors.textGray,
-            //       size: 10,
-            //     ),
-            //   ),
-            //   Text(
-            //     "2% Ocean Shoreline",
-            //     style: TextStyle(
-            //       color: AppColors.textGray,
-            //       fontSize: 16,
-            //     ),
-            //   ),
-            //   Padding(
-            //     padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            //     child: Icon(
-            //       Icons.circle,
-            //       color: AppColors.textGray,
-            //       size: 10,
-            //     ),
-            //   ),
-            //   Text(
-            //     "90% Milk bottle",
-            //     style: TextStyle(
-            //       color: AppColors.textGray,
-            //       fontSize: 16,
-            //     ),
-            //   ),
-            //   Padding(
-            //     padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            //     child: Icon(
-            //       Icons.circle,
-            //       color: AppColors.textGray,
-            //       size: 10,
-            //     ),
-            //   )
-            // ],
-          ),
+          provider.identifiedLabels.value.isEmpty
+              ? const SizedBox()
+              : Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runSpacing: 10,
+                  children: provider.identifiedLabels.value
+                      .take(3)
+                      .mapIndexed<Widget>((index, element) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "${(element.confidence * 100).toStringAsFixed(0)}% ${element.text.capitalizeByWord()}",
+                          style: const TextStyle(
+                            color: AppColors.textGray,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Icon(
+                            Icons.circle,
+                            color: AppColors.textGray,
+                            size: 10,
+                          ),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                  // children: [
+                  //   Text(
+                  //     "90% Milk bottle",
+                  //     style: TextStyle(
+                  //       color: AppColors.textGray,
+                  //       fontSize: 16,
+                  //     ),
+                  //   ),
+                  //   Padding(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  //     child: Icon(
+                  //       Icons.circle,
+                  //       color: AppColors.textGray,
+                  //       size: 10,
+                  //     ),
+                  //   ),
+                  //   Text(
+                  //     "2% Ocean Shoreline",
+                  //     style: TextStyle(
+                  //       color: AppColors.textGray,
+                  //       fontSize: 16,
+                  //     ),
+                  //   ),
+                  //   Padding(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  //     child: Icon(
+                  //       Icons.circle,
+                  //       color: AppColors.textGray,
+                  //       size: 10,
+                  //     ),
+                  //   ),
+                  //   Text(
+                  //     "90% Milk bottle",
+                  //     style: TextStyle(
+                  //       color: AppColors.textGray,
+                  //       fontSize: 16,
+                  //     ),
+                  //   ),
+                  //   Padding(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  //     child: Icon(
+                  //       Icons.circle,
+                  //       color: AppColors.textGray,
+                  //       size: 10,
+                  //     ),
+                  //   )
+                  // ],
+                ),
           60.0.verticalSpace(),
           Center(
             child: Transform.scale(
