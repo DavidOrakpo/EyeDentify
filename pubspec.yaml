@@ -61,6 +61,10 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   lottie: ^2.6.0
   darq: ^2.0.0
+  google_mlkit_object_detection: ^0.10.0
+  path: ^1.8.3
+  path_provider: ^2.1.0
+  google_mlkit_commons: ^0.5.0
 
 dev_dependencies:
   flutter_test:
@@ -90,6 +94,7 @@ flutter:
     - assets/icons/
     - assets/models/
     - assets/animations/
+    - assets/ml/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

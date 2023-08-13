@@ -1,18 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:lottie/lottie.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:template/api/models/recognition.dart';
-import 'package:template/core/Enums/ready_state.dart';
-import 'package:template/core/Extensions/extensions.dart';
-import 'package:template/presentation/styles/text_styles.dart';
 import 'package:template/presentation/views/Home/viewModel/home_page_view_model.dart';
 import 'package:template/presentation/views/SlidingPanel/sliding_panel.dart';
-import 'package:template/presentation/views/components/blurred_container.dart';
-import 'package:template/presentation/views/components/dual_value_listenable_builder.dart';
+import 'package:template/presentation/views/components/mlkit/object_detector_view.dart';
 import 'package:template/presentation/views/components/ui/floating_actions.dart';
 
 import '../../../../api/models/screen_params.dart';
@@ -92,11 +84,22 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 //   color: Colors.purple,
                 // ),
 
-                body: const DetectorWidget(),
+                // body: const DetectorWidget(),
+                body: ObjectDetectorView(),
                 panelBuilder: (panelController) {
-                  return const IdentifiedDetailsPanel(
-                      // identifiedRecognitions: identifiedRecognition,
-                      );
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 15),
+                    decoration: const BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                  );
+                  // return const IdentifiedDetailsPanel(
+                  // identifiedRecognitions: identifiedRecognition,
+                  // );
                 },
               ),
               FloatingActionsWidget(
