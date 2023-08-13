@@ -5,7 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:template/api/models/recognition.dart';
 import 'package:template/core/Extensions/extensions.dart';
 import 'package:template/presentation/views/Home/viewModel/home_page_view_model.dart';
-
+import 'package:collection/collection.dart';
 import '../../../api/models/screen_params.dart';
 import '../../styles/app_colors.dart';
 import '../../styles/text_styles.dart';
@@ -64,6 +64,7 @@ class _IdentifiedDetailsPanelState
                     "",
                 style: AppTextStyle.bodyTwo.copyWith(
                   fontSize: 24,
+                  color: AppColors.black,
                 ),
               ),
               Container(
@@ -87,58 +88,84 @@ class _IdentifiedDetailsPanelState
             ],
           ),
           10.0.verticalSpace(),
-          const Wrap(
+          Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
             runSpacing: 10,
-            children: [
-              Text(
-                "90% Milk bottle",
-                style: TextStyle(
-                  color: AppColors.textGray,
-                  fontSize: 16,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Icon(
-                  Icons.circle,
-                  color: AppColors.textGray,
-                  size: 10,
-                ),
-              ),
-              Text(
-                "2% Ocean Shoreline",
-                style: TextStyle(
-                  color: AppColors.textGray,
-                  fontSize: 16,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Icon(
-                  Icons.circle,
-                  color: AppColors.textGray,
-                  size: 10,
-                ),
-              ),
-              Text(
-                "90% Milk bottle",
-                style: TextStyle(
-                  color: AppColors.textGray,
-                  fontSize: 16,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Icon(
-                  Icons.circle,
-                  color: AppColors.textGray,
-                  size: 10,
-                ),
-              )
-            ],
+            children: provider.identifiedRecognitions.value!
+                .take(3)
+                .mapIndexed<Widget>((index, element) {
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "${(element.score * 100).toStringAsFixed(0)}% ${element.label.capitalizeByWord()}",
+                    style: const TextStyle(
+                      color: AppColors.textGray,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Icon(
+                      Icons.circle,
+                      color: AppColors.textGray,
+                      size: 10,
+                    ),
+                  ),
+                ],
+              );
+            }).toList(),
+            // children: [
+            //   Text(
+            //     "90% Milk bottle",
+            //     style: TextStyle(
+            //       color: AppColors.textGray,
+            //       fontSize: 16,
+            //     ),
+            //   ),
+            //   Padding(
+            //     padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            //     child: Icon(
+            //       Icons.circle,
+            //       color: AppColors.textGray,
+            //       size: 10,
+            //     ),
+            //   ),
+            //   Text(
+            //     "2% Ocean Shoreline",
+            //     style: TextStyle(
+            //       color: AppColors.textGray,
+            //       fontSize: 16,
+            //     ),
+            //   ),
+            //   Padding(
+            //     padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            //     child: Icon(
+            //       Icons.circle,
+            //       color: AppColors.textGray,
+            //       size: 10,
+            //     ),
+            //   ),
+            //   Text(
+            //     "90% Milk bottle",
+            //     style: TextStyle(
+            //       color: AppColors.textGray,
+            //       fontSize: 16,
+            //     ),
+            //   ),
+            //   Padding(
+            //     padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            //     child: Icon(
+            //       Icons.circle,
+            //       color: AppColors.textGray,
+            //       size: 10,
+            //     ),
+            //   )
+            // ],
           ),
-          40.0.verticalSpace(),
+          60.0.verticalSpace(),
           Center(
             child: Transform.scale(
               scale: 5,
@@ -159,7 +186,7 @@ class _IdentifiedDetailsPanelState
           5.0.verticalSpace(),
           Center(
             child: Text(
-              "Tap to pause/play",
+              "Tap to Pause/Play",
               style: AppTextStyle.bodyOne.copyWith(
                 fontSize: 14,
                 color: AppColors.gray.shade300,
@@ -189,7 +216,7 @@ class _IdentifiedDetailsPanelState
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.expand_less,
                         color: AppColors.textGray,
                       ),
