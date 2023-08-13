@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:template/core/Alerts/context.dart';
 import 'package:template/presentation/views/Home/home_page.dart';
+import 'package:template/presentation/views/components/ui/home_view.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   return AppRoutes(ref: ref).router;
@@ -26,8 +27,8 @@ class AppRoutes {
     routes: [
       GoRoute(
         path: "/",
-        name: HomePage.routeIdentifier,
-        builder: (context, state) => const HomePage(),
+        name: HomeView.routeIdentifier,
+        builder: (context, state) => const HomeView(),
       )
     ],
   );

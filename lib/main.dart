@@ -8,6 +8,7 @@ import 'package:template/core/Utilities/routes/routes.dart';
 import 'package:template/presentation/styles/darkMode_provider.dart';
 import 'package:template/presentation/styles/theme.dart';
 
+import 'api/models/screen_params.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -73,6 +74,8 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final provider = ref.watch(themeProvider);
     final goRouter = ref.watch(goRouterProvider);
+    ScreenParams.screenSize = MediaQuery.sizeOf(context);
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: Styles.themeData(provider.darkTheme, context),
