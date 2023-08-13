@@ -87,19 +87,19 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 // body: const DetectorWidget(),
                 body: ObjectDetectorView(),
                 panelBuilder: (panelController) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 15),
-                    decoration: const BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20),
-                      ),
-                    ),
-                  );
-                  // return const IdentifiedDetailsPanel(
-                  // identifiedRecognitions: identifiedRecognition,
+                  // return Container(
+                  //   padding: const EdgeInsets.symmetric(
+                  //       horizontal: 15, vertical: 15),
+                  //   decoration: const BoxDecoration(
+                  //     color: AppColors.white,
+                  //     borderRadius: BorderRadius.vertical(
+                  //       top: Radius.circular(20),
+                  //     ),
+                  //   ),
                   // );
+                  return const IdentifiedDetailsPanel(
+                      // identifiedRecognitions: identifiedRecognition,
+                      );
                 },
               ),
               FloatingActionsWidget(

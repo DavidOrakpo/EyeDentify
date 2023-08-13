@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
+import 'package:template/presentation/views/Home/viewModel/home_page_view_model.dart';
 
 import '../../../../core/Utilities/utils/utils.dart';
 import '../ui/carmera_overlay.dart';
@@ -9,12 +13,12 @@ import 'object_detector_painter.dart';
 // import 'painters/object_detector_painter.dart';
 // import 'utils.dart';
 
-class ObjectDetectorView extends StatefulWidget {
+class ObjectDetectorView extends ConsumerStatefulWidget {
   @override
-  State<ObjectDetectorView> createState() => _ObjectDetectorView();
+  ConsumerState<ObjectDetectorView> createState() => _ObjectDetectorView();
 }
 
-class _ObjectDetectorView extends State<ObjectDetectorView> {
+class _ObjectDetectorView extends ConsumerState<ObjectDetectorView> {
   ObjectDetector? _objectDetector;
   DetectionMode _mode = DetectionMode.stream;
   bool _canProcess = false;
@@ -186,6 +190,8 @@ class _ObjectDetectorView extends State<ObjectDetectorView> {
       _text = '';
     });
     final objects = await _objectDetector!.processImage(inputImage);
+    // log(objects.toString());
+    ref.read(homePageVM).currentDetectedObjects.value = objects;
     // print('Objects found: ${objects.length}\n\n');
     if (inputImage.metadata?.size != null &&
         inputImage.metadata?.rotation != null) {

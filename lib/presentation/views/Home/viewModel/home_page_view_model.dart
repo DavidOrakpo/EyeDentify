@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:template/api/models/recognition.dart';
@@ -56,6 +57,14 @@ class HomePageViewModel with ChangeNotifier {
 
   ValueNotifier<List<Recognition>?> currentRecognizedObjects =
       ValueNotifier(null);
+
+  ValueNotifier<List<Label>> identifiedLabels = ValueNotifier([]);
+
+  ValueNotifier<List<DetectedObject>> currentDetectedObjects =
+      ValueNotifier([]);
+  ValueNotifier<List<DetectedObject>> identifiedDetectedObjects =
+      ValueNotifier([]);
+
   ValueNotifier<List<Recognition>?> identifiedRecognitions = ValueNotifier([]);
   ValueNotifier<ScanState> currentScanState =
       ValueNotifier(ScanState.PRESCANNED);

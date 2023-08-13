@@ -86,8 +86,8 @@ class _CameraViewState extends State<CameraView> {
         children: <Widget>[
           Center(
             child: _changingCameraLens
-                ? Center(
-                    child: const Text('Changing camera lens'),
+                ? const Center(
+                    child: Text('Changing camera lens'),
                   )
                 : ClipRect(
                     clipper: MediaSizeClipper(mediaSize),
@@ -95,7 +95,7 @@ class _CameraViewState extends State<CameraView> {
                       scale: scale,
                       child: CameraPreview(
                         _controller!,
-                        child: widget.customPaint,
+                        // child: widget.customPaint,
                       ),
                     ),
                   ),

@@ -59,9 +59,7 @@ class _IdentifiedDetailsPanelState
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                provider.identifiedRecognitions.value?.first.label
-                        .capitalizeByWord() ??
-                    "",
+                provider.identifiedLabels.value.first.text.capitalizeByWord(),
                 style: AppTextStyle.bodyTwo.copyWith(
                   fontSize: 24,
                   color: AppColors.black,
@@ -81,7 +79,12 @@ class _IdentifiedDetailsPanelState
                   children: [
                     SvgPicture.asset("assets/icons/devicon-google.svg"),
                     8.0.horizontalSpace(),
-                    const Text("Search"),
+                    const Text(
+                      "Search",
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
                   ],
                 ),
               )
@@ -91,7 +94,7 @@ class _IdentifiedDetailsPanelState
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
             runSpacing: 10,
-            children: provider.identifiedRecognitions.value!
+            children: provider.identifiedLabels.value
                 .take(3)
                 .mapIndexed<Widget>((index, element) {
               return Row(
@@ -100,7 +103,7 @@ class _IdentifiedDetailsPanelState
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "${(element.score * 100).toStringAsFixed(0)}% ${element.label.capitalizeByWord()}",
+                    "${(element.confidence * 100).toStringAsFixed(0)}% ${element.text.capitalizeByWord()}",
                     style: const TextStyle(
                       color: AppColors.textGray,
                       fontSize: 16,

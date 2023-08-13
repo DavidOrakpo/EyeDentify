@@ -49,7 +49,7 @@ class FloatingActionsWidget extends ConsumerWidget {
                         scanState == ScanState.SCANNEDEMPTY)
                     ? () {
                         provider.currentScanState.value = ScanState.PRESCANNED;
-                        provider.identifiedRecognitions.value = null;
+                        provider.identifiedDetectedObjects.value = [];
                         if (scanState == ScanState.SCANNED) {
                           provider.panelController!.isPanelShown
                               ? provider.panelController!.hide()
@@ -65,28 +65,43 @@ class FloatingActionsWidget extends ConsumerWidget {
                             // provider.identifiedRecognitions.value!
                             //     .addAllUniqueRecognitions(
                             //         provider.currentRecognizedObjects.value!);
-                            provider.identifiedRecognitions.value =
-                                provider.currentRecognizedObjects.value;
-                            if (provider.identifiedRecognitions.value == null) {
-                              provider.currentScanState.value =
-                                  ScanState.SCANNEDEMPTY;
-                              return;
-                            }
+                            // provider.identifiedRecognitions.value =
+                            //     provider.currentRecognizedObjects.value;
+
+                            provider.identifiedDetectedObjects.value =
+                                provider.currentDetectedObjects.value;
+                            // if (provider.identifiedRecognitions.value == null) {
+                            //   provider.currentScanState.value =
+                            //       ScanState.SCANNEDEMPTY;
+                            //   return;
+                            // }
                             if (provider
-                                .identifiedRecognitions.value!.isEmpty) {
+                                .identifiedDetectedObjects.value.isEmpty) {
                               provider.currentScanState.value =
                                   ScanState.SCANNEDEMPTY;
                               return;
                             }
-                            provider.identifiedRecognitions.value =
-                                provider.identifiedRecognitions.value!
+                            provider.identifiedLabels.value =
+                                provider.identifiedDetectedObjects.value
+                                    .map((e) {
+                                      return e.labels;
+                                    })
+                                    .toList()
+                                    .expand((element) => element)
+                                    .toList()
                                     .distinct(
-                                      (element) => element.label,
+                                      (element) => element.text,
                                     )
                                     .toList();
+                            // provider.identifiedDetectedObjects.value =
+                            //     provider.identifiedDetectedObjects.value
+                            //         .distinct(
+                            //           (element) => element.labels,
+                            //         )
+                            //         .toList();
                             // provider.identifiedRecognitions.value?.wher;
-                            log("Identified Recognition:${provider.identifiedRecognitions.value}");
-                            log("Current Recognition:${provider.currentRecognizedObjects.value}");
+                            log("Identified Labels:${provider.identifiedLabels.value}");
+                            // log("Current Recognition:${provider.currentRecognizedObjects.value}");
                             provider.panelController!.isPanelShown
                                 ? provider.panelController!.hide()
                                 : provider.panelController!.show();
