@@ -56,6 +56,7 @@ class HomePageViewModel with ChangeNotifier {
 
   ValueNotifier<List<Recognition>?> currentRecognizedObjects =
       ValueNotifier(null);
+  ValueNotifier<List<Recognition>?> identifiedRecognitions = ValueNotifier([]);
   ValueNotifier<ScanState> currentScanState =
       ValueNotifier(ScanState.PRESCANNED);
 

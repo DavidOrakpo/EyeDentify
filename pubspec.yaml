@@ -60,6 +60,7 @@ dependencies:
   tflite_flutter: ^0.10.1
   sliding_up_panel: ^2.0.0+1
   lottie: ^2.6.0
+  darq: ^2.0.0
 
 dev_dependencies:
   flutter_test:

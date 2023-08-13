@@ -11,10 +11,8 @@ import '../../styles/app_colors.dart';
 import '../../styles/text_styles.dart';
 
 class IdentifiedDetailsPanel extends ConsumerStatefulWidget {
-  final List<Recognition>? identifiedRecognitions;
   const IdentifiedDetailsPanel({
     super.key,
-    required this.identifiedRecognitions,
   });
 
   @override
@@ -61,7 +59,8 @@ class _IdentifiedDetailsPanelState
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                widget.identifiedRecognitions?.first.label.capitalizeByWord() ??
+                provider.identifiedRecognitions.value?.first.label
+                        .capitalizeByWord() ??
                     "",
                 style: AppTextStyle.bodyTwo.copyWith(
                   fontSize: 24,

@@ -13,6 +13,7 @@ import 'package:template/presentation/views/Home/viewModel/home_page_view_model.
 import 'package:template/presentation/views/SlidingPanel/sliding_panel.dart';
 import 'package:template/presentation/views/components/blurred_container.dart';
 import 'package:template/presentation/views/components/dual_value_listenable_builder.dart';
+import 'package:template/presentation/views/components/ui/floating_actions.dart';
 
 import '../../../../api/models/screen_params.dart';
 import '../../../styles/app_colors.dart';
@@ -76,7 +77,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   top: Radius.circular(20),
                 ),
                 onPanelSlide: (position) {
-                  log(position.toString());
+                  // log(position.toString());
                   provider.panelPosition.value = position;
                 },
                 // collapsed: const Text("Collapsed View"),
@@ -93,117 +94,17 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
                 body: const DetectorWidget(),
                 panelBuilder: (panelController) {
-                  return IdentifiedDetailsPanel(
-                    identifiedRecognitions: identifiedRecognition,
-                  );
+                  return const IdentifiedDetailsPanel(
+                      // identifiedRecognitions: identifiedRecognition,
+                      );
                 },
               ),
-              DualValueListenableBuilder(
-                provider.panelPosition,
-                provider.currentScanState,
-                builder: (context, panelPosition, scanState, child) {
-                  var maxScrollExtent = panelMaxHeight - panelMinHeight;
-
-                  fabHeight =
-                      panelPosition * maxScrollExtent + floatingInitialHeight;
-                  return Positioned(
-                    bottom: provider.panelController!.isPanelShown
-                        ? fabHeight
-                        : ScreenParams.screenSize.height * 0.1,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        InkWell(
-                          onTap: (scanState == ScanState.SCANNED ||
-                                  scanState == ScanState.SCANNEDEMPTY)
-                              ? () {
-                                  provider.currentScanState.value =
-                                      ScanState.PRESCANNED;
-                                  identifiedRecognition = null;
-                                  if (scanState == ScanState.SCANNED) {
-                                    provider.panelController!.isPanelShown
-                                        ? provider.panelController!.hide()
-                                        : provider.panelController!.show();
-                                  }
-                                }
-                              : () async {
-                                  provider.currentScanState.value =
-                                      ScanState.SCANNING;
-                                  await Future.delayed(
-                                    const Duration(milliseconds: 750),
-                                    () {
-                                      provider.currentScanState.value =
-                                          ScanState.SCANNED;
-                                      identifiedRecognition = provider
-                                          .currentRecognizedObjects.value;
-                                      if (identifiedRecognition!.isEmpty) {
-                                        provider.currentScanState.value =
-                                            ScanState.SCANNEDEMPTY;
-                                        return;
-                                      }
-
-                                      log(identifiedRecognition.toString());
-                                      provider.panelController!.isPanelShown
-                                          ? provider.panelController!.hide()
-                                          : provider.panelController!.show();
-                                    },
-                                  );
-                                },
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Container(
-                                height: 53,
-                                width: 53,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  // borderRadius: BorderRadius.circular(28),
-                                ),
-                                child: CircularProgressIndicator(
-                                  color: scanState == ScanState.SCANNING
-                                      ? Colors.blue
-                                      : Colors.transparent,
-                                  backgroundColor: Colors.transparent,
-                                ),
-                              ),
-                              CircleAvatar(
-                                backgroundColor: AppColors.white,
-                                radius: 25,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: SvgPicture.asset(
-                                      "assets/icons/solar-eye-broken.svg"),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        10.0.verticalSpace(),
-                        BlurredContainer(
-                          // height: 30,
-                          // width: 200,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: Text(
-                            scanState == ScanState.PRESCANNED
-                                ? "Tap the button to identify"
-                                : scanState == ScanState.SCANNING
-                                    ? "Identifying..."
-                                    : scanState == ScanState.SCANNEDEMPTY
-                                        ? "Nothing EyeDentified"
-                                        : "Tap here to restart",
-                            style: const TextStyle(
-                              color: AppColors.white,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                },
-              )
+              FloatingActionsWidget(
+                panelMaxHeight: panelMaxHeight,
+                panelMinHeight: panelMinHeight,
+                floatingInitialHeight: floatingInitialHeight,
+                // identifiedRecognitions: identifiedRecognition,
+              ),
             ],
           );
         },

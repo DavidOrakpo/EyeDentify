@@ -56,8 +56,8 @@ class CameraDarkOverlay extends StatelessWidget {
         child: CustomPaint(
           foregroundPainter: BorderPainter(),
           child: SizedBox(
-            width: newScanArea,
-            height: newScanArea,
+            width: newScanArea + 2,
+            height: newScanArea + 2,
           ),
         ),
       ),
