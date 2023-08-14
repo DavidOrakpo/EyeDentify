@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
-import 'package:template/api/models/recognition.dart';
 import 'package:template/core/Extensions/extensions.dart';
 import 'package:template/presentation/views/Home/viewModel/home_page_view_model.dart';
 import 'package:collection/collection.dart';
@@ -24,7 +23,10 @@ class _IdentifiedDetailsPanelState
     extends ConsumerState<IdentifiedDetailsPanel> {
   @override
   Widget build(BuildContext context) {
+    double highestPredictable = 0;
+
     final provider = ref.watch(homePageVM);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       decoration: const BoxDecoration(
