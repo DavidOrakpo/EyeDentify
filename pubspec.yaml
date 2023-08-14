@@ -52,6 +52,12 @@ dependencies:
   flutter_easyloading: ^3.0.5
   image_picker: ^1.0.1
   firebase_core: ^2.15.0
+
+  cloud_firestore: ^4.8.4
+
+  firebase_storage: ^11.2.5
+
+  logger: ^2.0.1
   # tflite: ^1.1.2
   camera: ^0.10.5+2
   permission_handler: ^10.4.3

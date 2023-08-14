@@ -8,7 +8,6 @@ import 'package:template/presentation/views/components/mlkit/object_detector_vie
 import 'package:template/presentation/views/components/ui/floating_actions.dart';
 
 import '../../../../api/models/screen_params.dart';
-import '../../../styles/app_colors.dart';
 import 'detector_widget.dart';
 
 /// [HomeView] stacks [DetectorWidget]
@@ -84,8 +83,11 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 //   color: Colors.purple,
                 // ),
 
-                // body: const DetectorWidget(),
-                body: ObjectDetectorView(),
+                //  body: const DetectorWidget(),
+                body: Stack(children: [
+                  ObjectDetectorView(),
+                  const DetectorWidget(),
+                ]),
                 panelBuilder: (panelController) {
                   // return Container(
                   //   padding: const EdgeInsets.symmetric(

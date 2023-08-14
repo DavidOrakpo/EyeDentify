@@ -113,12 +113,12 @@ class _DetectorWidgetState extends ConsumerState<DetectorWidget>
           ),
         ),
         // Stats
-        // _statsWidget(),
-        // Bounding boxes
-        // AspectRatio(
-        //   aspectRatio: aspect,
-        //   child: _boundingBoxes(),
-        // ),
+        _statsWidget(),
+        //  Bounding boxes
+        AspectRatio(
+          aspectRatio: aspect,
+          child: _boundingBoxes(),
+        ),
         CameraDarkOverlay(
           overlayColour: Colors.black.withOpacity(0.5),
         )
