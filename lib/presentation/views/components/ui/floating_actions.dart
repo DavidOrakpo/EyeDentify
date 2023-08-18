@@ -1,10 +1,10 @@
 import 'dart:developer';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:template/api/models/recognition.dart';
+import 'package:template/api/services/service/firebasestorage_service.dart';
 import 'package:template/core/Extensions/extensions.dart';
+import 'package:template/core/Utilities/utils/utils.dart';
 import 'package:template/presentation/views/Home/viewModel/home_page_view_model.dart';
 import 'package:darq/darq.dart';
 // import 'package:template/core/Extensions/extensions.dart';
@@ -28,6 +28,9 @@ class FloatingActionsWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = ref.watch(homePageVM);
+    FireBaseTextToSpeechExtension firebaseText =
+        FireBaseTextToSpeechExtension();
+
     return DualValueListenableBuilder(
       provider.panelPosition,
       provider.currentScanState,
@@ -105,6 +108,9 @@ class FloatingActionsWidget extends ConsumerWidget {
                             provider.panelController!.isPanelShown
                                 ? provider.panelController!.hide()
                                 : provider.panelController!.show();
+
+                            firebaseText.sendTextToSpeek(
+                                provider.identifiedLabels.value.first.text);
                           },
                         );
                       },

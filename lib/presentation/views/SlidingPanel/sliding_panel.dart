@@ -6,6 +6,7 @@ import 'package:template/core/Extensions/extensions.dart';
 import 'package:template/presentation/views/Home/viewModel/home_page_view_model.dart';
 import 'package:collection/collection.dart';
 import '../../../api/models/screen_params.dart';
+import '../../../api/services/service/firebasestorage_service.dart';
 import '../../styles/app_colors.dart';
 import '../../styles/text_styles.dart';
 
@@ -127,53 +128,6 @@ class _IdentifiedDetailsPanelState
                       ],
                     );
                   }).toList(),
-                  // children: [
-                  //   Text(
-                  //     "90% Milk bottle",
-                  //     style: TextStyle(
-                  //       color: AppColors.textGray,
-                  //       fontSize: 16,
-                  //     ),
-                  //   ),
-                  //   Padding(
-                  //     padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  //     child: Icon(
-                  //       Icons.circle,
-                  //       color: AppColors.textGray,
-                  //       size: 10,
-                  //     ),
-                  //   ),
-                  //   Text(
-                  //     "2% Ocean Shoreline",
-                  //     style: TextStyle(
-                  //       color: AppColors.textGray,
-                  //       fontSize: 16,
-                  //     ),
-                  //   ),
-                  //   Padding(
-                  //     padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  //     child: Icon(
-                  //       Icons.circle,
-                  //       color: AppColors.textGray,
-                  //       size: 10,
-                  //     ),
-                  //   ),
-                  //   Text(
-                  //     "90% Milk bottle",
-                  //     style: TextStyle(
-                  //       color: AppColors.textGray,
-                  //       fontSize: 16,
-                  //     ),
-                  //   ),
-                  //   Padding(
-                  //     padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  //     child: Icon(
-                  //       Icons.circle,
-                  //       color: AppColors.textGray,
-                  //       size: 10,
-                  //     ),
-                  //   )
-                  // ],
                 ),
           60.0.verticalSpace(),
           Center(
@@ -195,12 +149,15 @@ class _IdentifiedDetailsPanelState
           ),
           5.0.verticalSpace(),
           Center(
-            child: Text(
-              "Tap to Pause/Play",
-              style: AppTextStyle.bodyOne.copyWith(
-                fontSize: 14,
-                color: AppColors.gray.shade300,
-                fontWeight: FontWeight.w500,
+            child: InkWell(
+              onTap: () {},
+              child: Text(
+                "Tap to Pause/Play",
+                style: AppTextStyle.bodyOne.copyWith(
+                  fontSize: 14,
+                  color: AppColors.gray.shade300,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),

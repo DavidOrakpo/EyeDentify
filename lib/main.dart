@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:template/api/services/service/firebasestorage_service.dart';
 import 'package:template/core/Utilities/routes/routes.dart';
 import 'package:template/core/Utilities/utils/utils.dart';
 import 'package:template/presentation/styles/darkMode_provider.dart';
@@ -36,7 +37,9 @@ class MyApp extends ConsumerStatefulWidget {
 
 class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   DarkThemeProvider themeChangeProvider = DarkThemeProvider();
+  final StorageService _fireBaseTextToSpeechExtension = StorageService();
   bool isBackground = false;
+
   @override
   void initState() {
     super.initState();
@@ -48,6 +51,7 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
     //!! This function checks if firebase database is welly setup
     runMeMate();
+    getDoc();
   }
 
   void getCurrentAppTheme() async {
@@ -80,6 +84,12 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     logger.i(snap.data());
     name = snap.data()!['name'] ?? 'Noting';
     logger.i(name);
+  }
+
+  getDoc() async {
+    var snap = await FirebaseFirestore.instance.collection('docs').get();
+    final data = snap.docs.map((e) => e.data()).toList();
+    logger.i(data);
   }
 
   @override
