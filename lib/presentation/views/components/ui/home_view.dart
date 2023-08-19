@@ -46,7 +46,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     ScreenParams.screenSize = MediaQuery.sizeOf(context);
     final panelMinHeight = ScreenParams.screenSize.height * 0.2;
     final floatingInitialHeight = ScreenParams.screenSize.height * 0.22;
-    final panelMaxHeight = ScreenParams.screenSize.height * 0.8;
+    final panelMaxHeight = ScreenParams.screenSize.height * 0.6;
     return Scaffold(
       key: GlobalKey(),
       backgroundColor: Colors.black,
