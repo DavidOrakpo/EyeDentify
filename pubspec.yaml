@@ -57,6 +57,8 @@ dependencies:
 
   firebase_storage: ^11.2.5
 
+  
+
   logger: ^2.0.1
   # tflite: ^1.1.2
   camera: ^0.10.5+2
@@ -75,6 +77,12 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo/logo.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
