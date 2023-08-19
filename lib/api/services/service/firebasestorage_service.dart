@@ -1,12 +1,25 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:random_string/random_string.dart';
+import 'package:template/presentation/views/Home/viewModel/home_page_view_model.dart';
 
 import '../../../core/Utilities/utils/utils.dart';
 
-class StorageService {
+final storageServiceProvider =
+    ChangeNotifierProvider((ref) => _StorageService(ref: ref));
+
+class _StorageService with ChangeNotifier {
+  Ref ref;
+  _StorageService({
+    required this.ref,
+  });
   final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
 
@@ -21,19 +34,37 @@ class StorageService {
   }
 
   Future<firebase_storage.ListResult> listFiles() async {
+    var temp = await storage.ref("docs");
+    // var temp2 = await storage.ref("docs");
     firebase_storage.ListResult result = await storage.ref('docs').listAll();
 
     for (var ref in result.items) {
-      logger.e('Found file $ref');
+      logger.i('Found file $ref');
     }
 
     return result;
   }
 
-  Future<String> downloadUrl(String imageName) async {
-    String downloadUrl = await storage.ref('test/$imageName').getDownloadURL();
+  Future<void> downloadUrl(String assetName) async {
+    try {
+      const oneMegabyte = 1024 * 1024;
+      var downloadedQueryQudio =
+          await storage.ref("docs/$assetName.mp3").getData(oneMegabyte);
+      if (downloadedQueryQudio == null) {
+        return;
+      }
 
-    return downloadUrl;
+      await ref
+          .read(homePageVM)
+          .audioPlayer
+          .play(BytesSource(downloadedQueryQudio));
+      // AudioPlayer().play(source)
+      // String downloadUrl = await storage.ref('test/$assetName').getDownloadURL();
+
+      // return downloadUrl;
+    } catch (e) {
+      logger.e(e.toString());
+    }
   }
 }
 
@@ -43,18 +74,24 @@ class FireBaseTextToSpeechExtension {
   FireBaseTextToSpeechExtension({FirebaseFirestore? firestore})
       : _firestore = firestore ?? FirebaseFirestore.instance;
 
-  Future<void> sendTextToSpeek(String text) async {
-    final ref = await _firestore.collection('docs').add({
+  static String createID(String text) {
+    return "eyeDentified_${text}_${randomAlphaNumeric(14)}";
+  }
+
+  Future<void> sendTextToSpeek(String text, String generatedID) async {
+    // final generatedID = createID(text);
+    await _firestore.collection('eyeDentifiedObjects').doc(generatedID).set({
+      "id": generatedID,
       "text": text,
-      "languageCode": "en-US", // Optional if per-document overrides are enabled
-      "ssmlGender": "FEMALE", // Optional if per-document overrides are enabled
-      "audioEncoding": "MP3", // Optional if per-document overrides are enabled
-      "voiceName":
-          "en-US-Wavenet-A" // Optional if per-document overrides are enabled
+      "languageCode": "en-GB", // Optional if per-document overrides are enabled
+      "ssmlGender": "2", // Optional if per-document overrides are enabled
+      // "audioEncoding": "MP3", // Optional if per-document overrides are enabled
+      // "voiceName":
+      //     "en-US-Wavenet-A" // Optional if per-document overrides are enabled
     });
 
-    ref.snapshots().listen((event) {
-      logger.e(event.data());
-    });
+    // ref.snapshots().listen((event) {
+    //   logger.e(event.data());
+    // });
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,7 +47,10 @@ class HomePageViewModel with ChangeNotifier {
   }
 
   PanelController? _panelController = PanelController();
+  AudioPlayer audioPlayer = AudioPlayer();
   PanelController? get panelController => _panelController;
+
+  String currentScannedObjectID = "";
 
   set panelController(PanelController? value) {
     _panelController = value;

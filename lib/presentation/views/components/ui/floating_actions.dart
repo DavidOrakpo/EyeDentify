@@ -61,58 +61,53 @@ class FloatingActionsWidget extends ConsumerWidget {
                       }
                     : () async {
                         provider.currentScanState.value = ScanState.SCANNING;
-                        await Future.delayed(
-                          const Duration(milliseconds: 750),
-                          () {
-                            provider.currentScanState.value = ScanState.SCANNED;
-                            // provider.identifiedRecognitions.value!
-                            //     .addAllUniqueRecognitions(
-                            //         provider.currentRecognizedObjects.value!);
-                            // provider.identifiedRecognitions.value =
-                            //     provider.currentRecognizedObjects.value;
+                        provider.identifiedDetectedObjects.value =
+                            provider.currentDetectedObjects.value;
 
-                            provider.identifiedDetectedObjects.value =
-                                provider.currentDetectedObjects.value;
-                            // if (provider.identifiedRecognitions.value == null) {
-                            //   provider.currentScanState.value =
-                            //       ScanState.SCANNEDEMPTY;
-                            //   return;
-                            // }
-                            if (provider
-                                .identifiedDetectedObjects.value.isEmpty) {
-                              provider.currentScanState.value =
-                                  ScanState.SCANNEDEMPTY;
-                              return;
-                            }
-                            provider.identifiedLabels.value =
-                                provider.identifiedDetectedObjects.value
-                                    .map((e) {
-                                      return e.labels;
-                                    })
-                                    .toList()
-                                    .expand((element) => element)
-                                    .toList()
-                                    .distinct(
-                                      (element) => element.text,
-                                    )
-                                    .toList();
-                            // provider.identifiedDetectedObjects.value =
-                            //     provider.identifiedDetectedObjects.value
-                            //         .distinct(
-                            //           (element) => element.labels,
-                            //         )
-                            //         .toList();
-                            // provider.identifiedRecognitions.value?.wher;
-                            log("Identified Labels:${provider.identifiedLabels.value}");
-                            // log("Current Recognition:${provider.currentRecognizedObjects.value}");
-                            provider.panelController!.isPanelShown
-                                ? provider.panelController!.hide()
-                                : provider.panelController!.show();
-
-                            firebaseText.sendTextToSpeek(
+                        if (provider.identifiedDetectedObjects.value.isEmpty) {
+                          provider.currentScanState.value =
+                              ScanState.SCANNEDEMPTY;
+                          return;
+                        }
+                        provider.identifiedLabels.value =
+                            provider.identifiedDetectedObjects.value
+                                .map((e) {
+                                  return e.labels;
+                                })
+                                .toList()
+                                .expand((element) => element)
+                                .toList()
+                                .distinct(
+                                  (element) => element.text,
+                                )
+                                .toList();
+                        log("Identified Labels:${provider.identifiedLabels.value}");
+                        final generatedID =
+                            FireBaseTextToSpeechExtension.createID(
                                 provider.identifiedLabels.value.first.text);
-                          },
-                        );
+                        provider.currentScannedObjectID = generatedID;
+                        await firebaseText
+                            .sendTextToSpeek(
+                                provider.identifiedLabels.value.first.text,
+                                generatedID)
+                            .then((value) async {
+                          var temp = await ref
+                              .read(storageServiceProvider)
+                              .listFiles();
+                          // await StorageService().downloadUrl(generatedID);
+
+                          logger.i(temp.items);
+                        });
+                        provider.currentScanState.value = ScanState.SCANNED;
+
+                        // log("Current Recognition:${provider.currentRecognizedObjects.value}");
+                        provider.panelController!.isPanelShown
+                            ? provider.panelController!.hide()
+                            : provider.panelController!.show();
+                        // await Future.delayed(
+                        //   const Duration(milliseconds: 750),
+                        //   () async {},
+                        // );
                       },
                 child: Stack(
                   alignment: Alignment.center,

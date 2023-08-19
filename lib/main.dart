@@ -37,7 +37,7 @@ class MyApp extends ConsumerStatefulWidget {
 
 class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   DarkThemeProvider themeChangeProvider = DarkThemeProvider();
-  final StorageService _fireBaseTextToSpeechExtension = StorageService();
+  // final StorageService _fireBaseTextToSpeechExtension = StorageService();
   bool isBackground = false;
 
   @override

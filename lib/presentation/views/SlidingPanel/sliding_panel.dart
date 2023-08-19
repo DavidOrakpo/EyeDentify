@@ -61,14 +61,16 @@ class _IdentifiedDetailsPanelState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                provider.identifiedLabels.value.isEmpty
-                    ? "EyeDentified Objects will be shown here"
-                    : provider.identifiedLabels.value.first.text
-                        .capitalizeByWord(),
-                style: AppTextStyle.bodyTwo.copyWith(
-                  fontSize: 24,
-                  color: AppColors.black,
+              Flexible(
+                child: Text(
+                  provider.identifiedLabels.value.isEmpty
+                      ? "EyeDentified Objects will be shown here"
+                      : provider.identifiedLabels.value.first.text
+                          .capitalizeByWord(),
+                  style: AppTextStyle.bodyTwo.copyWith(
+                    fontSize: provider.identifiedLabels.value.isEmpty ? 18 : 24,
+                    color: AppColors.black,
+                  ),
                 ),
               ),
               Container(
@@ -131,10 +133,17 @@ class _IdentifiedDetailsPanelState
                 ),
           60.0.verticalSpace(),
           Center(
-            child: Transform.scale(
-              scale: 5,
-              child: Lottie.asset(
-                "assets/animations/wave.json",
+            child: InkWell(
+              onTap: () async {
+                await ref
+                    .read(storageServiceProvider)
+                    .downloadUrl(provider.currentScannedObjectID);
+              },
+              child: Transform.scale(
+                scale: 5,
+                child: Lottie.asset(
+                  "assets/animations/wave.json",
+                ),
               ),
             ),
           ),
@@ -150,7 +159,11 @@ class _IdentifiedDetailsPanelState
           5.0.verticalSpace(),
           Center(
             child: InkWell(
-              onTap: () {},
+              onTap: () async {
+                await ref
+                    .read(storageServiceProvider)
+                    .downloadUrl(provider.currentScannedObjectID);
+              },
               child: Text(
                 "Tap to Pause/Play",
                 style: AppTextStyle.bodyOne.copyWith(

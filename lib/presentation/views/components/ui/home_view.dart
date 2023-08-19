@@ -35,6 +35,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
   }
 
   @override
+  void dispose() {
+    ref.read(homePageVM).audioPlayer.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     ScreenParams.screenSize = MediaQuery.sizeOf(context);
     final panelMinHeight = ScreenParams.screenSize.height * 0.2;
