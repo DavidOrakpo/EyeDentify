@@ -73,27 +73,33 @@ class _IdentifiedDetailsPanelState
                   ),
                 ),
               ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF3F3F3),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SvgPicture.asset("assets/icons/devicon-google.svg"),
-                    8.0.horizontalSpace(),
-                    const Text(
-                      "Search",
-                      style: TextStyle(
-                        color: Colors.black,
+              InkWell(
+                onTap: () {
+                  provider
+                      .launMychUrl(provider.identifiedLabels.value.first.text);
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF3F3F3),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset("assets/icons/devicon-google.svg"),
+                      8.0.horizontalSpace(),
+                      const Text(
+                        "Search",
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )
             ],

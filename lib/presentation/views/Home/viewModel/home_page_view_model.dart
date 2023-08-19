@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:template/api/models/recognition.dart';
 import 'package:template/core/Enums/ready_state.dart';
+import 'package:url_launcher/url_launcher.dart';
 // import 'package:tflite/tflite.dart';
 
 // import '../../../../core/Utilities/screen_params.dart';
@@ -152,5 +151,12 @@ class HomePageViewModel with ChangeNotifier {
     //     useGpuDelegate: false,
     //   );
     // }
+  }
+
+  Future<void> launMychUrl(String? word) async {
+    final Uri _url = Uri.parse('https://www.google.com/search?q=$word');
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
   }
 }
