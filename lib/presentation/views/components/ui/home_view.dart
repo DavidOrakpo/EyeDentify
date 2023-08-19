@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:template/api/models/recognition.dart';
+import 'package:template/api/services/service/firebasestorage_service.dart';
 import 'package:template/presentation/views/Home/viewModel/home_page_view_model.dart';
 import 'package:template/presentation/views/SlidingPanel/sliding_panel.dart';
 import 'package:template/presentation/views/components/mlkit/object_detector_view.dart';
@@ -77,6 +78,19 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 onPanelSlide: (position) {
                   // log(position.toString());
                   provider.panelPosition.value = position;
+                },
+                onPanelOpened: () async {
+                  if (provider.isSpeaking.value == false) {
+                    await ref
+                        .read(storageServiceProvider)
+                        .getDescribedTextFromPalmApi()
+                        .then((value) async {
+                      provider.isSpeaking.value = true;
+                      await ref
+                          .read(storageServiceProvider)
+                          .downloadUrl(provider.currentScannedObjectID);
+                    });
+                  }
                 },
                 // collapsed: const Text("Collapsed View"),
                 // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),

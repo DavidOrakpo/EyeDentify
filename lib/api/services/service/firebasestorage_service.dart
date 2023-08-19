@@ -45,6 +45,16 @@ class _StorageService with ChangeNotifier {
     return result;
   }
 
+  Future<void> getDescribedTextFromPalmApi() async {
+    var snap = await FirebaseFirestore.instance
+        .collection('eyeDentifiedObjects')
+        .doc(ref.read(homePageVM).currentScannedObjectID)
+        .get();
+    logger.i(snap.data()?["text"]);
+    ref.read(homePageVM).currentDescribedTextFromPalmApi.value =
+        snap.data()?["text"] ?? null;
+  }
+
   Future<void> downloadUrl(String assetName) async {
     try {
       const oneMegabyte = 1024 * 1024;
@@ -82,7 +92,7 @@ class FireBaseTextToSpeechExtension {
     // final generatedID = createID(text);
     await _firestore.collection('eyeDentifiedObjects').doc(generatedID).set({
       "id": generatedID,
-      "text": text,
+      "labels": text,
       "languageCode": "en-GB", // Optional if per-document overrides are enabled
       "ssmlGender": "2", // Optional if per-document overrides are enabled
       // "audioEncoding": "MP3", // Optional if per-document overrides are enabled

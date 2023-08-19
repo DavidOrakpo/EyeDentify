@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -51,6 +52,7 @@ class FloatingActionsWidget extends ConsumerWidget {
                 onTap: (scanState == ScanState.SCANNED ||
                         scanState == ScanState.SCANNEDEMPTY)
                     ? () {
+                        provider.isSpeaking.value = false;
                         provider.currentScanState.value = ScanState.PRESCANNED;
                         provider.identifiedDetectedObjects.value = [];
                         if (scanState == ScanState.SCANNED) {
@@ -80,16 +82,26 @@ class FloatingActionsWidget extends ConsumerWidget {
                                 .distinct(
                                   (element) => element.text,
                                 )
-                                .toList();
+                                .toList()
+                              ..sort(
+                                (a, b) => b.confidence.compareTo(a.confidence),
+                              );
                         log("Identified Labels:${provider.identifiedLabels.value}");
+                        var currentPalmApiPromptText =
+                            provider.identifiedLabels.value
+                                .mapIndexed((index, element) {
+                                  return element.text;
+                                })
+                                .toList()
+                                .take(5)
+                                .join(",");
                         final generatedID =
                             FireBaseTextToSpeechExtension.createID(
                                 provider.identifiedLabels.value.first.text);
                         provider.currentScannedObjectID = generatedID;
                         await firebaseText
                             .sendTextToSpeek(
-                                provider.identifiedLabels.value.first.text,
-                                generatedID)
+                                currentPalmApiPromptText, generatedID)
                             .then((value) async {
                           var temp = await ref
                               .read(storageServiceProvider)
@@ -98,12 +110,16 @@ class FloatingActionsWidget extends ConsumerWidget {
 
                           logger.i(temp.items);
                         });
-                        provider.currentScanState.value = ScanState.SCANNED;
-
-                        // log("Current Recognition:${provider.currentRecognizedObjects.value}");
-                        provider.panelController!.isPanelShown
-                            ? provider.panelController!.hide()
-                            : provider.panelController!.show();
+                        await Future.delayed(
+                          Duration(milliseconds: 500),
+                          () {
+                            provider.currentScanState.value = ScanState.SCANNED;
+                            // log("Current Recognition:${provider.currentRecognizedObjects.value}");
+                            provider.panelController!.isPanelShown
+                                ? provider.panelController!.hide()
+                                : provider.panelController!.show();
+                          },
+                        );
                         // await Future.delayed(
                         //   const Duration(milliseconds: 750),
                         //   () async {},

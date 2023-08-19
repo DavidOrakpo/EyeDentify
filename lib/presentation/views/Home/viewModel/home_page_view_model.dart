@@ -56,6 +56,8 @@ class HomePageViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  ValueNotifier<bool?> isPlayBackPaused = ValueNotifier(false);
+
   ValueNotifier<double> panelPosition = ValueNotifier(0);
 
   ValueNotifier<List<Recognition>?> currentRecognizedObjects =
@@ -71,6 +73,7 @@ class HomePageViewModel with ChangeNotifier {
   ValueNotifier<List<Recognition>?> identifiedRecognitions = ValueNotifier([]);
   ValueNotifier<ScanState> currentScanState =
       ValueNotifier(ScanState.PRESCANNED);
+  ValueNotifier<bool> isSpeaking = ValueNotifier(false);
 
   bool? _isPanelOpen = false;
   bool? get isPanelOpen => _isPanelOpen;
@@ -79,6 +82,9 @@ class HomePageViewModel with ChangeNotifier {
     _isPanelOpen = value;
     notifyListeners();
   }
+
+  ValueNotifier<String?> currentDescribedTextFromPalmApi = ValueNotifier(null);
+  // String? currentDescribedTextFromPalmApi;
 
   double? _panelPosition = 0;
 
