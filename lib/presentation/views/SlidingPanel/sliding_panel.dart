@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -142,48 +143,82 @@ class _IdentifiedDetailsPanelState
                       }).toList(),
                     ),
               60.0.verticalSpace(),
-              Center(
-                child: InkWell(
-                  onTap: () async {
-                    await ref
-                        .read(storageServiceProvider)
-                        .downloadUrl(provider.currentScannedObjectID);
-                  },
-                  child: Transform.scale(
-                    scale: 5,
-                    child: Lottie.asset(
-                      "assets/animations/wave.json",
+              ValueListenableBuilder(
+                valueListenable: provider.audioPlayerState,
+                builder: (context, audioState, child) => Center(
+                  child: InkWell(
+                    onTap: () async {
+                      if (ref.read(homePageVM).currentAudioBytes != null &&
+                          audioState == PlayerState.completed) {
+                        provider.audioPlayer.play(BytesSource(
+                            ref.read(homePageVM).currentAudioBytes!));
+                      }
+                      // await ref
+                      //     .read(storageServiceProvider)
+                      //     .downloadUrl(provider.currentScannedObjectID);
+                    },
+                    child: Transform.scale(
+                      scale: 5,
+                      child: Lottie.asset(
+                        "assets/animations/wave.json",
+                        animate: audioState == PlayerState.playing ||
+                            audioState == null,
+                      ),
                     ),
                   ),
                 ),
               ),
               10.0.verticalSpace(),
               Center(
-                child: Text(
-                  isSpeakingAudio ? "Speaking..." : "",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: AppColors.black,
-                  ),
+                child: ValueListenableBuilder(
+                  valueListenable: provider.audioPlayerState,
+                  builder: (context, audioState, child) {
+                    return Text(
+                      audioState == PlayerState.playing
+                          ? "Speaking..."
+                          : audioState == PlayerState.paused
+                              ? "Paused"
+                              : "Listen Again",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppColors.black,
+                      ),
+                    );
+                  },
                 ),
               ),
               5.0.verticalSpace(),
               ValueListenableBuilder(
-                valueListenable: provider.isPlayBackPaused,
-                builder: (context, isPlayBackPaused, child) {
+                valueListenable: provider.audioPlayerState,
+                builder: (context, audioState, child) {
                   return Center(
                     child: InkWell(
                       onTap: () async {
-                        if (isPlayBackPaused) {
-                          await provider.audioPlayer.resume();
-                          provider.isPlayBackPaused.value = !isPlayBackPaused;
-                          return;
+                        switch (audioState) {
+                          case PlayerState.playing:
+                            await provider.audioPlayer.pause();
+                            return;
+                          case PlayerState.paused:
+                            await provider.audioPlayer.resume();
+                            return;
+                          case PlayerState.completed:
+                            provider.audioPlayer.play(BytesSource(
+                                ref.read(homePageVM).currentAudioBytes!));
+                            return;
+                          default:
                         }
-                        await provider.audioPlayer.pause();
-                        provider.isPlayBackPaused.value = !isPlayBackPaused;
+
+                        // if (isPlayBackPaused) {
+                        //   provider.isPlayBackPaused.value = !isPlayBackPaused;
+                        //   return;
+                        // }
+                        // await provider.audioPlayer.pause();
+                        // provider.isPlayBackPaused.value = !isPlayBackPaused;
                       },
                       child: Text(
-                        isPlayBackPaused! ? "Tap to Play" : "Tap to Pause",
+                        audioState == PlayerState.paused
+                            ? "Tap to Play"
+                            : "Tap to Pause",
                         style: AppTextStyle.bodyOne.copyWith(
                           fontSize: 14,
                           color: AppColors.gray.shade300,

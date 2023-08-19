@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -46,7 +47,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     ScreenParams.screenSize = MediaQuery.sizeOf(context);
     final panelMinHeight = ScreenParams.screenSize.height * 0.2;
     final floatingInitialHeight = ScreenParams.screenSize.height * 0.22;
-    final panelMaxHeight = ScreenParams.screenSize.height * 0.6;
+    final panelMaxHeight = ScreenParams.screenSize.height * 0.5;
     return Scaffold(
       key: GlobalKey(),
       backgroundColor: Colors.black,
@@ -80,7 +81,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   provider.panelPosition.value = position;
                 },
                 onPanelOpened: () async {
-                  if (provider.isSpeaking.value == false) {
+                  // if (provider.isSpeaking.value == false) {
+                  if (ref.read(homePageVM).audioPlayerState.value == null) {
                     await ref
                         .read(storageServiceProvider)
                         .getDescribedTextFromPalmApi()
@@ -91,6 +93,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           .downloadUrl(provider.currentScannedObjectID);
                     });
                   }
+                  // }
                 },
                 // collapsed: const Text("Collapsed View"),
                 // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),

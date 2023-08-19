@@ -54,7 +54,10 @@ class FloatingActionsWidget extends ConsumerWidget {
                     ? () {
                         provider.isSpeaking.value = false;
                         provider.currentScanState.value = ScanState.PRESCANNED;
+                        provider.audioPlayerState.value = null;
                         provider.identifiedDetectedObjects.value = [];
+                        ref.read(homePageVM).isPlayBackFinished.value = null;
+                        provider.currentDescribedTextFromPalmApi.value = null;
                         if (scanState == ScanState.SCANNED) {
                           provider.panelController!.isPanelShown
                               ? provider.panelController!.hide()
@@ -93,7 +96,7 @@ class FloatingActionsWidget extends ConsumerWidget {
                                   return element.text;
                                 })
                                 .toList()
-                                .take(5)
+                                .take(3)
                                 .join(",");
                         final generatedID =
                             FireBaseTextToSpeechExtension.createID(
@@ -111,7 +114,7 @@ class FloatingActionsWidget extends ConsumerWidget {
                           logger.i(temp.items);
                         });
                         await Future.delayed(
-                          Duration(milliseconds: 500),
+                          Duration(milliseconds: 700),
                           () {
                             provider.currentScanState.value = ScanState.SCANNED;
                             // log("Current Recognition:${provider.currentRecognizedObjects.value}");

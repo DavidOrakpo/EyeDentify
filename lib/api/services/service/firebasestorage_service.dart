@@ -58,16 +58,40 @@ class _StorageService with ChangeNotifier {
   Future<void> downloadUrl(String assetName) async {
     try {
       const oneMegabyte = 1024 * 1024;
-      var downloadedQueryQudio =
+      ref.read(homePageVM).currentAudioBytes =
           await storage.ref("docs/$assetName.mp3").getData(oneMegabyte);
-      if (downloadedQueryQudio == null) {
+      // var downloadedQueryQudio =
+      //     await storage.ref("docs/$assetName.mp3").getData(oneMegabyte);
+      if (ref.read(homePageVM).currentAudioBytes == null) {
         return;
       }
 
       await ref
           .read(homePageVM)
           .audioPlayer
-          .play(BytesSource(downloadedQueryQudio));
+          .play(BytesSource(ref.read(homePageVM).currentAudioBytes!));
+      await ref
+          .read(homePageVM)
+          .audioPlayer
+          .onPlayerStateChanged
+          .listen((event) {
+        ref.read(homePageVM).audioPlayerState.value = event;
+        switch (event) {
+          case PlayerState.playing:
+            ref.read(homePageVM).isPlayBackPaused.value = false;
+            break;
+          case PlayerState.paused:
+            ref.read(homePageVM).isPlayBackPaused.value = true;
+            break;
+          case PlayerState.completed:
+            ref.read(homePageVM).isPlayBackFinished.value = true;
+            break;
+          default:
+        }
+      });
+      // await ref.read(homePageVM).audioPlayer.onPlayerComplete.listen((event) {
+      //   ref.read(homePageVM).isPlayBackFinished.value = true;
+      // });
       // AudioPlayer().play(source)
       // String downloadUrl = await storage.ref('test/$assetName').getDownloadURL();
 

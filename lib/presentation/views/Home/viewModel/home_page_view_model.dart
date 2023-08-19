@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +49,7 @@ class HomePageViewModel with ChangeNotifier {
 
   PanelController? _panelController = PanelController();
   AudioPlayer audioPlayer = AudioPlayer();
+
   PanelController? get panelController => _panelController;
 
   String currentScannedObjectID = "";
@@ -56,7 +59,11 @@ class HomePageViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  Uint8List? currentAudioBytes = null;
+
   ValueNotifier<bool?> isPlayBackPaused = ValueNotifier(false);
+  ValueNotifier<PlayerState?> audioPlayerState = ValueNotifier(null);
+  ValueNotifier<bool?> isPlayBackFinished = ValueNotifier(null);
 
   ValueNotifier<double> panelPosition = ValueNotifier(0);
 
