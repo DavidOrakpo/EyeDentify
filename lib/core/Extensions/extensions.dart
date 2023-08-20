@@ -1,5 +1,6 @@
 /// Extension on [String] that capitalizes the first letter of the first word in a sentence
 import 'package:flutter/material.dart';
+import 'package:template/api/models/recognition.dart' as Recognize;
 
 extension FigmaDimension on double {
   double toFigmaHeight(double fontSize) {
@@ -10,6 +11,16 @@ extension FigmaDimension on double {
 extension StringExtension on String {
   String capitalize() {
     return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+  }
+
+  String capitalizeByWord() {
+    if (trim().isEmpty) {
+      return '';
+    }
+    return split(' ')
+        .map((element) =>
+            "${element[0].toUpperCase()}${element.substring(1).toLowerCase()}")
+        .join(" ");
   }
 }
 
@@ -67,6 +78,29 @@ extension ListExtension<E> on List<E> {
   void addAllUnique(Iterable<E> iterable) {
     for (var element in iterable) {
       if (!contains(element)) {
+        add(element);
+      }
+    }
+  }
+}
+
+extension IterableExtension<T> on Iterable<T> {
+  Iterable<T> distinctBy(Object Function(T e) getCompareValue) {
+    var result = <T>[];
+    for (var element in this) {
+      if (!result.any((x) => getCompareValue(x) == getCompareValue(element))) {
+        result.add(element);
+      }
+    }
+
+    return result;
+  }
+}
+
+extension ListRecognition<Recognition> on List<Recognize.Recognition> {
+  void addAllUniqueRecognitions(Iterable<Recognize.Recognition> iterable) {
+    for (var element in iterable) {
+      if (!contains(element.label)) {
         add(element);
       }
     }

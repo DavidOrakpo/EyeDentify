@@ -52,14 +52,42 @@ dependencies:
   flutter_easyloading: ^3.0.5
   image_picker: ^1.0.1
   firebase_core: ^2.15.0
-  tflite: ^1.1.2
+
+  cloud_firestore: ^4.8.4
+
+  firebase_storage: ^11.2.5
+
+  
+
+  logger: ^2.0.1
+  # tflite: ^1.1.2
   camera: ^0.10.5+2
   permission_handler: ^10.4.3
   image: ^4.0.17
+  exif: ^3.1.4
+  tflite_flutter: ^0.10.1
+  sliding_up_panel: ^2.0.0+1
+  lottie: ^2.6.0
+  darq: ^2.0.0
+  google_mlkit_object_detection: ^0.10.0
+  path: ^1.8.3
+  path_provider: ^2.1.0
+  google_mlkit_commons: ^0.5.0
+  audioplayers: ^5.1.0
+  random_string: ^2.3.1
+
+  url_launcher: ^6.1.12
+  accessibility_tools: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo/logo.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -84,6 +112,9 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/models/
+    - assets/animations/
+    - assets/logo/
+    - assets/ml/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

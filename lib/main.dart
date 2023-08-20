@@ -1,13 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:template/api/services/service/firebasestorage_service.dart';
 import 'package:template/core/Utilities/routes/routes.dart';
+import 'package:template/core/Utilities/utils/utils.dart';
 import 'package:template/presentation/styles/darkMode_provider.dart';
 import 'package:template/presentation/styles/theme.dart';
 
+import 'api/models/screen_params.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -15,8 +19,10 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
   runApp(const ProviderScope(
     child: MyApp(),
   ));
@@ -31,7 +37,9 @@ class MyApp extends ConsumerStatefulWidget {
 
 class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   DarkThemeProvider themeChangeProvider = DarkThemeProvider();
+  // final StorageService _fireBaseTextToSpeechExtension = StorageService();
   bool isBackground = false;
+
   @override
   void initState() {
     super.initState();
@@ -40,6 +48,10 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
         getCurrentAppTheme();
       },
     );
+
+    //!! This function checks if firebase database is welly setup
+    // runMeMate();
+    // getDoc();
   }
 
   void getCurrentAppTheme() async {
@@ -62,6 +74,24 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     }
   }
 
+  // runMeMate() async {
+  //   String name = '';
+
+  //   var snap = await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc('B24CXCWAzjFkbDRHVEEH')
+  //       .get();
+  //   logger.i(snap.data());
+  //   name = snap.data()!['name'] ?? 'Noting';
+  //   logger.i(name);
+  // }
+
+  // getDoc() async {
+  //   var snap = await FirebaseFirestore.instance.collection('docs').get();
+  //   final data = snap.docs.map((e) => e.data()).toList();
+  //   logger.i(data);
+  // }
+
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
@@ -73,6 +103,8 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final provider = ref.watch(themeProvider);
     final goRouter = ref.watch(goRouterProvider);
+    ScreenParams.screenSize = MediaQuery.sizeOf(context);
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: Styles.themeData(provider.darkTheme, context),
