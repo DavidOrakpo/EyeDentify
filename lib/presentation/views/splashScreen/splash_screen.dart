@@ -66,7 +66,7 @@ class _SplashScreenPageState extends ConsumerState<SplashScreenPage> {
                 Semantics(
                   label: 'Eyedentify Logo',
                   child: SvgPicture.asset(
-                    "assets/logo/White NO BG.svg",
+                    "assets/logo/logo.svg",
                     color: AppColors.white,
                   ),
                 ),

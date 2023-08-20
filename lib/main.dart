@@ -50,8 +50,8 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     );
 
     //!! This function checks if firebase database is welly setup
-    runMeMate();
-    getDoc();
+    // runMeMate();
+    // getDoc();
   }
 
   void getCurrentAppTheme() async {
@@ -74,23 +74,23 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
     }
   }
 
-  runMeMate() async {
-    String name = '';
+  // runMeMate() async {
+  //   String name = '';
 
-    var snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc('B24CXCWAzjFkbDRHVEEH')
-        .get();
-    logger.i(snap.data());
-    name = snap.data()!['name'] ?? 'Noting';
-    logger.i(name);
-  }
+  //   var snap = await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc('B24CXCWAzjFkbDRHVEEH')
+  //       .get();
+  //   logger.i(snap.data());
+  //   name = snap.data()!['name'] ?? 'Noting';
+  //   logger.i(name);
+  // }
 
-  getDoc() async {
-    var snap = await FirebaseFirestore.instance.collection('docs').get();
-    final data = snap.docs.map((e) => e.data()).toList();
-    logger.i(data);
-  }
+  // getDoc() async {
+  //   var snap = await FirebaseFirestore.instance.collection('docs').get();
+  //   final data = snap.docs.map((e) => e.data()).toList();
+  //   logger.i(data);
+  // }
 
   @override
   void dispose() {
