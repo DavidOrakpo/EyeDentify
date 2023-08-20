@@ -31,8 +31,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(homePageVM).panelController?.hide();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await ref.read(homePageVM).panelController?.hide();
     });
   }
 

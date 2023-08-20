@@ -7,6 +7,8 @@ import 'package:template/presentation/styles/app_colors.dart';
 import 'package:template/presentation/styles/text_styles.dart';
 import 'package:template/presentation/views/components/ui/home_view.dart';
 
+import '../Home/viewModel/home_page_view_model.dart';
+
 class SplashScreenPage extends ConsumerStatefulWidget {
   static const routeIdentifier = "SPLASH_SCREEN";
   const SplashScreenPage({super.key});
@@ -23,7 +25,8 @@ class _SplashScreenPageState extends ConsumerState<SplashScreenPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(
         const Duration(seconds: 3),
-        () {
+        () async {
+          await ref.read(homePageVM).panelController?.hide();
           context.goNamed(HomeView.routeIdentifier);
         },
       );
