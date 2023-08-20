@@ -24,6 +24,7 @@ class HomeView extends ConsumerStatefulWidget {
 
 class _HomeViewState extends ConsumerState<HomeView> {
   static const double initialHeightValue = 200;
+  // bool isInitializationComplete = false;
   double fabHeight = 0;
   List<Recognition>? identifiedRecognition = [];
 
@@ -31,8 +32,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    // ref.read(homePageVM).panelController?.hide();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await ref.read(homePageVM).panelController?.hide();
+      ref.read(homePageVM).isInitializationComplete.value = true;
     });
   }
 
@@ -121,6 +124,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   //     ),
                   //   ),
                   // );
+                  if (!provider.isInitializationComplete.value) {
+                    return SizedBox();
+                  }
                   return const IdentifiedDetailsPanel(
                       // identifiedRecognitions: identifiedRecognition,
                       );
@@ -128,7 +134,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
               ),
               FloatingActionsWidget(
                 panelMaxHeight: panelMaxHeight,
-                panelMinHeight: panelMinHeight,
+                panelMinHeight: provider.isInitializationComplete.value
+                    ? panelMinHeight
+                    : floatingInitialHeight,
                 floatingInitialHeight: floatingInitialHeight,
                 // identifiedRecognitions: identifiedRecognition,
               ),

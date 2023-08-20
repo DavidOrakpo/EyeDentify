@@ -40,151 +40,160 @@ class FloatingActionsWidget extends ConsumerWidget {
         var maxScrollExtent = panelMaxHeight - panelMinHeight;
 
         fabHeight = panelPosition * maxScrollExtent + floatingInitialHeight;
-        return Positioned(
-          bottom: provider.panelController!.isPanelShown
-              ? fabHeight
-              : ScreenParams.screenSize.height * 0.1,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              InkWell(
-                onTap: (scanState == ScanState.SCANNED ||
-                        scanState == ScanState.SCANNEDEMPTY)
-                    ? () {
-                        if (provider.audioPlayerState == PlayerState.playing) {
-                          provider.audioPlayer.stop();
-                        }
-                        provider.isSpeaking.value = false;
-                        provider.currentScanState.value = ScanState.PRESCANNED;
-                        provider.audioPlayerState.value = null;
-                        provider.identifiedDetectedObjects.value = [];
-                        ref.read(homePageVM).isPlayBackFinished.value = null;
-                        provider.currentDescribedTextFromPalmApi.value = null;
-                        if (scanState == ScanState.SCANNED) {
-                          provider.panelController!.isPanelShown
-                              ? provider.panelController!.hide()
-                              : provider.panelController!.show();
-                        }
-                      }
-                    : () async {
-                        provider.currentScanState.value = ScanState.SCANNING;
-                        provider.identifiedDetectedObjects.value =
-                            provider.currentDetectedObjects.value;
-
-                        if (provider.identifiedDetectedObjects.value.isEmpty) {
+        return ValueListenableBuilder(
+          valueListenable: provider.isInitializationComplete,
+          builder: (context, isIinitializationComplete, child) => Positioned(
+            bottom: !isIinitializationComplete
+                ? ScreenParams.screenSize.height * 0.1
+                : provider.panelController!.isPanelShown
+                    ? fabHeight
+                    : ScreenParams.screenSize.height * 0.1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  onTap: (scanState == ScanState.SCANNED ||
+                          scanState == ScanState.SCANNEDEMPTY)
+                      ? () {
+                          if (provider.audioPlayerState ==
+                              PlayerState.playing) {
+                            provider.audioPlayer.stop();
+                          }
+                          provider.isSpeaking.value = false;
                           provider.currentScanState.value =
-                              ScanState.SCANNEDEMPTY;
-                          return;
-                        }
-                        provider.identifiedLabels.value =
-                            provider.identifiedDetectedObjects.value
-                                .map((e) {
-                                  return e.labels;
-                                })
-                                .toList()
-                                .expand((element) => element)
-                                .toList()
-                                .distinct(
-                                  (element) => element.text,
-                                )
-                                .toList()
-                              ..sort(
-                                (a, b) => b.confidence.compareTo(a.confidence),
-                              );
-                        log("Identified Labels:${provider.identifiedLabels.value}");
-                        var currentPalmApiPromptText =
-                            provider.identifiedLabels.value
-                                .mapIndexed((index, element) {
-                                  return element.text;
-                                })
-                                .toList()
-                                .take(3)
-                                .join(",");
-                        final generatedID =
-                            FireBaseTextToSpeechExtension.createID(
-                                provider.identifiedLabels.value.first.text);
-                        provider.currentScannedObjectID = generatedID;
-                        await firebaseText
-                            .sendTextToSpeek(
-                                currentPalmApiPromptText, generatedID)
-                            .then((value) async {
-                          var temp = await ref
-                              .read(storageServiceProvider)
-                              .listFiles();
-                          // await StorageService().downloadUrl(generatedID);
-
-                          logger.i(temp.items);
-                        });
-                        await Future.delayed(
-                          Duration(seconds: 1),
-                          () {
-                            provider.currentScanState.value = ScanState.SCANNED;
-                            // log("Current Recognition:${provider.currentRecognizedObjects.value}");
+                              ScanState.PRESCANNED;
+                          provider.audioPlayerState.value = null;
+                          provider.identifiedDetectedObjects.value = [];
+                          ref.read(homePageVM).isPlayBackFinished.value = null;
+                          provider.currentDescribedTextFromPalmApi.value = null;
+                          if (scanState == ScanState.SCANNED) {
                             provider.panelController!.isPanelShown
                                 ? provider.panelController!.hide()
                                 : provider.panelController!.show();
-                          },
-                        );
-                        // await Future.delayed(
-                        //   const Duration(milliseconds: 750),
-                        //   () async {},
-                        // );
-                      },
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      height: 53,
-                      width: 53,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        // borderRadius: BorderRadius.circular(28),
+                          }
+                        }
+                      : () async {
+                          provider.currentScanState.value = ScanState.SCANNING;
+                          provider.identifiedDetectedObjects.value =
+                              provider.currentDetectedObjects.value;
+
+                          if (provider
+                              .identifiedDetectedObjects.value.isEmpty) {
+                            provider.currentScanState.value =
+                                ScanState.SCANNEDEMPTY;
+                            return;
+                          }
+                          provider.identifiedLabels.value = provider
+                              .identifiedDetectedObjects.value
+                              .map((e) {
+                                return e.labels;
+                              })
+                              .toList()
+                              .expand((element) => element)
+                              .toList()
+                              .distinct(
+                                (element) => element.text,
+                              )
+                              .toList()
+                            ..sort(
+                              (a, b) => b.confidence.compareTo(a.confidence),
+                            );
+                          log("Identified Labels:${provider.identifiedLabels.value}");
+                          var currentPalmApiPromptText =
+                              provider.identifiedLabels.value
+                                  .mapIndexed((index, element) {
+                                    return element.text;
+                                  })
+                                  .toList()
+                                  .take(3)
+                                  .join(",");
+                          final generatedID =
+                              FireBaseTextToSpeechExtension.createID(
+                                  provider.identifiedLabels.value.first.text);
+                          provider.currentScannedObjectID = generatedID;
+                          await firebaseText
+                              .sendTextToSpeek(
+                                  currentPalmApiPromptText, generatedID)
+                              .then((value) async {
+                            var temp = await ref
+                                .read(storageServiceProvider)
+                                .listFiles();
+                            // await StorageService().downloadUrl(generatedID);
+
+                            logger.i(temp.items);
+                          });
+                          await Future.delayed(
+                            Duration(seconds: 1),
+                            () {
+                              provider.currentScanState.value =
+                                  ScanState.SCANNED;
+                              // log("Current Recognition:${provider.currentRecognizedObjects.value}");
+                              provider.panelController!.isPanelShown
+                                  ? provider.panelController!.hide()
+                                  : provider.panelController!.show();
+                            },
+                          );
+                          // await Future.delayed(
+                          //   const Duration(milliseconds: 750),
+                          //   () async {},
+                          // );
+                        },
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        height: 53,
+                        width: 53,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          // borderRadius: BorderRadius.circular(28),
+                        ),
+                        child: CircularProgressIndicator(
+                          color: scanState == ScanState.SCANNING
+                              ? Colors.blue
+                              : Colors.transparent,
+                          backgroundColor: Colors.transparent,
+                        ),
                       ),
-                      child: CircularProgressIndicator(
-                        color: scanState == ScanState.SCANNING
-                            ? Colors.blue
-                            : Colors.transparent,
-                        backgroundColor: Colors.transparent,
+                      CircleAvatar(
+                        backgroundColor: AppColors.white,
+                        radius: 25,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: SvgPicture.asset(
+                              "assets/icons/solar-eye-broken.svg"),
+                        ),
                       ),
-                    ),
-                    CircleAvatar(
-                      backgroundColor: AppColors.white,
-                      radius: 25,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: SvgPicture.asset(
-                            "assets/icons/solar-eye-broken.svg"),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              10.0.verticalSpace(),
-              BlurredContainer(
-                // height: 30,
-                // width: 200,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: Semantics(
-                  label: 'Tap the button to EyeDentify objects around you',
-                  child: Text(
-                    scanState == ScanState.PRESCANNED
-                        ? "Tap the button to EyeDentify"
-                        : scanState == ScanState.SCANNING
-                            ? "EyeDentifying..."
-                            : scanState == ScanState.SCANNEDEMPTY
-                                ? "Nothing EyeDentified"
-                                : "Tap here to restart",
-                    style: const TextStyle(
-                      color: AppColors.white,
-                      fontSize: 18,
-                    ),
+                    ],
                   ),
                 ),
-              )
-            ],
+                10.0.verticalSpace(),
+                BlurredContainer(
+                  // height: 30,
+                  // width: 200,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Semantics(
+                    label: 'Tap the button to EyeDentify objects around you',
+                    child: Text(
+                      scanState == ScanState.PRESCANNED
+                          ? "Tap the button to EyeDentify"
+                          : scanState == ScanState.SCANNING
+                              ? "EyeDentifying..."
+                              : scanState == ScanState.SCANNEDEMPTY
+                                  ? "Nothing EyeDentified"
+                                  : "Tap here to restart",
+                      style: const TextStyle(
+                        color: AppColors.white,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         );
       },

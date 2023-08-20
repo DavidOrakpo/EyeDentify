@@ -92,6 +92,8 @@ class HomePageViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  ValueNotifier<bool> isInitializationComplete = ValueNotifier(false);
+
   ValueNotifier<String?> currentDescribedTextFromPalmApi = ValueNotifier(null);
   // String? currentDescribedTextFromPalmApi;
 
