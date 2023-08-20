@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,6 +53,9 @@ class FloatingActionsWidget extends ConsumerWidget {
                 onTap: (scanState == ScanState.SCANNED ||
                         scanState == ScanState.SCANNEDEMPTY)
                     ? () {
+                        if (provider.audioPlayerState == PlayerState.playing) {
+                          provider.audioPlayer.stop();
+                        }
                         provider.isSpeaking.value = false;
                         provider.currentScanState.value = ScanState.PRESCANNED;
                         provider.audioPlayerState.value = null;
@@ -173,6 +177,7 @@ class FloatingActionsWidget extends ConsumerWidget {
                               : "Tap here to restart",
                   style: const TextStyle(
                     color: AppColors.white,
+                    fontSize: 18,
                   ),
                 ),
               )

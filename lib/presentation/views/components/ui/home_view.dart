@@ -47,7 +47,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     ScreenParams.screenSize = MediaQuery.sizeOf(context);
     final panelMinHeight = ScreenParams.screenSize.height * 0.2;
     final floatingInitialHeight = ScreenParams.screenSize.height * 0.22;
-    final panelMaxHeight = ScreenParams.screenSize.height * 0.5;
+    final panelMaxHeight = ScreenParams.screenSize.height * 0.6;
     return Scaffold(
       key: GlobalKey(),
       backgroundColor: Colors.black,
@@ -110,6 +110,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 // body: const DetectorWidget(),
                 body: ObjectDetectorView(),
                 panelBuilder: (panelController) {
+                  provider.panelScrollController = panelController;
                   // return Container(
                   //   padding: const EdgeInsets.symmetric(
                   //       horizontal: 15, vertical: 15),

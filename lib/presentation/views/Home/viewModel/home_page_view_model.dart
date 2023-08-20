@@ -82,6 +82,8 @@ class HomePageViewModel with ChangeNotifier {
       ValueNotifier(ScanState.PRESCANNED);
   ValueNotifier<bool> isSpeaking = ValueNotifier(false);
 
+  ScrollController? panelScrollController;
+
   bool? _isPanelOpen = false;
   bool? get isPanelOpen => _isPanelOpen;
 
