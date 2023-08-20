@@ -12,6 +12,10 @@ class AppColors {
   static const Color info = Color(0xFF2F80ED);
   static const defaultContainerColor = Color(0xFFF6F6F6);
   static const Color warning = Color(0xFFE2B93B);
+//#0039B7, #00A4FF, #007BFF
+  static const Color gradientOne = Color(0xFF0039B7);
+  static const Color gradientTwo = Color(0xFF00A4FF);
+  static const Color gradientThree = Color(0xFF007BFF);
 
   static const purple = MaterialColor(
     0xFF6956E5,

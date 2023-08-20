@@ -118,7 +118,7 @@ class FloatingActionsWidget extends ConsumerWidget {
                           logger.i(temp.items);
                         });
                         await Future.delayed(
-                          Duration(milliseconds: 700),
+                          Duration(seconds: 1),
                           () {
                             provider.currentScanState.value = ScanState.SCANNED;
                             // log("Current Recognition:${provider.currentRecognizedObjects.value}");

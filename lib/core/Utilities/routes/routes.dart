@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:template/core/Alerts/context.dart';
 import 'package:template/presentation/views/Home/home_page.dart';
 import 'package:template/presentation/views/components/ui/home_view.dart';
+import 'package:template/presentation/views/splashScreen/splash_screen.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   return AppRoutes(ref: ref).router;
@@ -27,9 +28,14 @@ class AppRoutes {
     routes: [
       GoRoute(
         path: "/",
+        name: SplashScreenPage.routeIdentifier,
+        builder: (context, state) => const SplashScreenPage(),
+      ),
+      GoRoute(
+        path: "/home",
         name: HomeView.routeIdentifier,
         builder: (context, state) => const HomeView(),
-      )
+      ),
     ],
   );
 }
