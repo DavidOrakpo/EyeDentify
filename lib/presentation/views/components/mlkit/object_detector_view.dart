@@ -73,25 +73,6 @@ class _ObjectDetectorView extends ConsumerState<ObjectDetectorView> {
       CameraDarkOverlay(
         overlayColour: Colors.black.withOpacity(0.5),
       ),
-      // Positioned(
-      //     top: 30,
-      //     left: 100,
-      //     right: 100,
-      //     child: Row(
-      //       children: [
-      //         Spacer(),
-      //         Container(
-      //             decoration: BoxDecoration(
-      //               color: Colors.black54,
-      //               borderRadius: BorderRadius.circular(10.0),
-      //             ),
-      //             child: Padding(
-      //               padding: const EdgeInsets.all(4.0),
-      //               child: _buildDropdown(),
-      //             )),
-      //         Spacer(),
-      //       ],
-      //     )),
     ]);
   }
 

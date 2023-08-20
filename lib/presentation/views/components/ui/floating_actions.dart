@@ -167,17 +167,20 @@ class FloatingActionsWidget extends ConsumerWidget {
                 // width: 200,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: Text(
-                  scanState == ScanState.PRESCANNED
-                      ? "Tap the button to EyeDentify"
-                      : scanState == ScanState.SCANNING
-                          ? "EyeDentifying..."
-                          : scanState == ScanState.SCANNEDEMPTY
-                              ? "Nothing EyeDentified"
-                              : "Tap here to restart",
-                  style: const TextStyle(
-                    color: AppColors.white,
-                    fontSize: 18,
+                child: Semantics(
+                  label: 'Tap the button to EyeDentify objects around you',
+                  child: Text(
+                    scanState == ScanState.PRESCANNED
+                        ? "Tap the button to EyeDentify"
+                        : scanState == ScanState.SCANNING
+                            ? "EyeDentifying..."
+                            : scanState == ScanState.SCANNEDEMPTY
+                                ? "Nothing EyeDentified"
+                                : "Tap here to restart",
+                    style: const TextStyle(
+                      color: AppColors.white,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               )

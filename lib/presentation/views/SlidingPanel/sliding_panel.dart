@@ -7,7 +7,6 @@ import 'package:template/core/Extensions/extensions.dart';
 import 'package:template/presentation/views/Home/viewModel/home_page_view_model.dart';
 import 'package:collection/collection.dart';
 import '../../../api/models/screen_params.dart';
-import '../../../api/services/service/firebasestorage_service.dart';
 import '../../styles/app_colors.dart';
 import '../../styles/text_styles.dart';
 
@@ -80,32 +79,36 @@ class _IdentifiedDetailsPanelState
                         ),
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        provider.launMychUrl(
-                            provider.identifiedLabels.value.first.text);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF3F3F3),
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SvgPicture.asset("assets/icons/devicon-google.svg"),
-                            8.0.horizontalSpace(),
-                            const Text(
-                              "Search",
-                              style: TextStyle(
-                                color: Colors.black,
+                    Semantics(
+                      label: 'Google search eyedentified word',
+                      child: InkWell(
+                        onTap: () {
+                          provider.launMychUrl(
+                              provider.identifiedLabels.value.first.text);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF3F3F3),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SvgPicture.asset(
+                                  "assets/icons/devicon-google.svg"),
+                              8.0.horizontalSpace(),
+                              const Text(
+                                "Search",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     )
@@ -120,27 +123,31 @@ class _IdentifiedDetailsPanelState
                         children: provider.identifiedLabels.value
                             .take(3)
                             .mapIndexed<Widget>((index, element) {
-                          return Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "${(element.confidence * 100).toStringAsFixed(0)}% ${element.text.capitalizeByWord()}",
-                                style: const TextStyle(
-                                  color: AppColors.textGray,
-                                  fontSize: 16,
+                          return Semantics(
+                            label: 'Other possible eyedentified objects',
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "${(element.confidence * 100).toStringAsFixed(0)}% ${element.text.capitalizeByWord()}",
+                                  style: const TextStyle(
+                                    color: AppColors.textGray,
+                                    fontSize: 16,
+                                  ),
                                 ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 12.0),
-                                child: Icon(
-                                  Icons.circle,
-                                  color: AppColors.textGray,
-                                  size: 10,
+                                const Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 12.0),
+                                  child: Icon(
+                                    Icons.circle,
+                                    color: AppColors.textGray,
+                                    size: 10,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           );
                         }).toList(),
                       ),
@@ -155,9 +162,6 @@ class _IdentifiedDetailsPanelState
                           provider.audioPlayer.play(BytesSource(
                               ref.read(homePageVM).currentAudioBytes!));
                         }
-                        // await ref
-                        //     .read(storageServiceProvider)
-                        //     .downloadUrl(provider.currentScannedObjectID);
                       },
                       child: Transform.scale(
                         scale: 5,
@@ -217,14 +221,17 @@ class _IdentifiedDetailsPanelState
                           // await provider.audioPlayer.pause();
                           // provider.isPlayBackPaused.value = !isPlayBackPaused;
                         },
-                        child: Text(
-                          audioState == PlayerState.paused
-                              ? "Tap to Play"
-                              : "Tap to Pause",
-                          style: AppTextStyle.bodyOne.copyWith(
-                            fontSize: 14,
-                            color: AppColors.gray.shade300,
-                            fontWeight: FontWeight.w500,
+                        child: Semantics(
+                          label: 'Play or pause button',
+                          child: Text(
+                            audioState == PlayerState.paused
+                                ? "Tap to Play"
+                                : "Tap to Pause",
+                            style: AppTextStyle.bodyOne.copyWith(
+                              fontSize: 14,
+                              color: AppColors.gray.shade300,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
@@ -255,30 +262,11 @@ class _IdentifiedDetailsPanelState
                             );
                           },
                         ),
-                        // 15.0.verticalSpace(),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.start,
-                        //   crossAxisAlignment: CrossAxisAlignment.center,
-                        //   mainAxisSize: MainAxisSize.min,
-                        //   children: [
-                        //     const Icon(
-                        //       Icons.expand_less,
-                        //       color: AppColors.textGray,
-                        //     ),
-                        //     5.0.horizontalSpace(),
-                        //     const Text(
-                        //       "Hide description",
-                        //       style: TextStyle(
-                        //         color: AppColors.textGray,
-                        //       ),
-                        //     )
-                        //   ],
-                        // )
                       ],
                     ),
                   ),
                 ),
-                // 30.0.verticalSpace(),
+
                 // Text(
                 //   "Other Possible Results",
                 //   style: AppTextStyle.headerFive.copyWith(

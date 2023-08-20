@@ -7,8 +7,6 @@ import 'package:template/presentation/styles/app_colors.dart';
 import 'package:template/presentation/styles/text_styles.dart';
 import 'package:template/presentation/views/components/ui/home_view.dart';
 
-import '../Home/viewModel/home_page_view_model.dart';
-
 class SplashScreenPage extends ConsumerStatefulWidget {
   static const routeIdentifier = "SPLASH_SCREEN";
   const SplashScreenPage({super.key});
@@ -26,7 +24,7 @@ class _SplashScreenPageState extends ConsumerState<SplashScreenPage> {
       await Future.delayed(
         const Duration(seconds: 3),
         () async {
-          await ref.read(homePageVM).panelController?.hide();
+          //  await ref.read(homePageVM).panelController?.close();
           context.goNamed(HomeView.routeIdentifier);
         },
       );
@@ -65,15 +63,21 @@ class _SplashScreenPageState extends ConsumerState<SplashScreenPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SvgPicture.asset(
-                  "assets/logo/White NO BG.svg",
-                  color: AppColors.white,
+                Semantics(
+                  label: 'Eyedentify Logo',
+                  child: SvgPicture.asset(
+                    "assets/logo/White NO BG.svg",
+                    color: AppColors.white,
+                  ),
                 ),
                 5.0.verticalSpace(),
-                Text(
-                  "EyeDentify your World!",
-                  style: AppTextStyle.headerThree.copyWith(
-                    color: AppColors.white,
+                Semantics(
+                  label: 'splash screen label.',
+                  child: Text(
+                    "EyeDentify your World!",
+                    style: AppTextStyle.headerThree.copyWith(
+                      color: AppColors.white,
+                    ),
                   ),
                 ),
                 // Spacer(),
