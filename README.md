@@ -5,7 +5,9 @@ EyeDentify is an app that enables the eyeDentification of objects in one's surro
 ## Technology Used
 <img src="https://img.shields.io/badge/flutter-Dart-blue" alt="made with flutter">
 
-![_alt_text](https://img.shields.io/badge/Firebase-text-0xFFFFCA28?style=for-the-badge&logo=Firebase")
+![_alt_text](https://img.shields.io/badge/Firebase-Fb-FFCA28?style=for-the-badge&logo=Firebase")
+
+![_alt_text](https://img.shields.io/badge/MachineLearning-ML-FFCA28?style=for-the-badge&logo=Firebase")
 
 
 ## Features
